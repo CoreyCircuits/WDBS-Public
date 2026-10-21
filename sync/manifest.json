@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "note": "Public-safe sync manifest. Fingerprints are sha256 of committed file content at the reviewed public commit. Private sync state is kept outside this repository.",
+  "components": [
+    {
+      "path": "wdbs/policy.py",
+      "classification": "SHARED",
+      "expected_differences": false,
+      "reviewed_public_commit": "951abe2f3ed2d2092c008083a862b59bc8f79435",
+      "reviewed_fingerprint": "sha256:c8d09d4bb525e23755890e39c40d952219ca9335e5035b7bca9d42aafebb9083",
+      "tests_required": [
+        "tests.test_core"
+      ]
+    },
+    {
+      "path": "fs42_overlay/wdbs_router_core.py",
+      "classification": "SHARED",
+      "expected_differences": false,
+      "reviewed_public_commit": "951abe2f3ed2d2092c008083a862b59bc8f79435",
+      "reviewed_fingerprint": "sha256:dc402f80adca24610be0d34e4f6798409eee10807e6855038e4aca45d5280bf1",
+      "tests_required": [
+        "tests.test_router_core",
+        "tests.test_remote_app"
+      ]
+    }
+  ]
+}
