@@ -20,8 +20,8 @@ Not bundled. The exact revision WDBS was developed against is **not recorded**, 
 FS42-facing code as a reference for the integration contracts described in `docs/ARCHITECTURE.md`.
 
 ## Testing status
-`python -m unittest discover -s tests -q` was run offline on Python 3.14.8 only. The CI workflow targets Python 3.12 but has
-**not been run**; no other interpreter version is claimed. See `docs/TESTING.md`.
+`python -m unittest discover -s tests -q` was run offline on Python 3.14.8, and CI runs it on Python 3.12 (green on the initial
+commit, as reported by the maintainer). No other interpreter version is claimed. See `docs/TESTING.md`.
 
 ## Settled decisions
 - The weather channel brand is "WeatherCast"; the example station name is "EXAMPLE SITCOMS".
@@ -34,6 +34,5 @@ FS42-facing code as a reference for the integration contracts described in `docs
 
 ## Possible future work (not required for this release)
 Record the FS42 revision and add a verified compatibility statement; licence review and a clean re-implementation of the patch
-step; a verified or upstream-attributed schema fixture; cleared fonts/logos/graphics; per-file SPDX headers; Python 3.12 CI
-results; pinning CI actions by commit; making Notion property names configurable; renaming `prodesk/` to `apphost/`;
+step; a verified or upstream-attributed schema fixture; cleared fonts/logos/graphics; per-file SPDX headers; pinning CI actions by commit; making Notion property names configurable; renaming `prodesk/` to `apphost/`;
 a generalized installer, other platforms and a hardware matrix.

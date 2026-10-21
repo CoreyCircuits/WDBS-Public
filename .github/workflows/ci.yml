@@ -1,5 +1,4 @@
-# Offline CI for the public candidate. NOT RUN yet: no workflow execution has been performed on this tree.
-# The Python version below is a planning choice and is not a verified support claim.
+# Offline CI: runs the unit suite on Python 3.12 only. No other Python version is claimed.
 name: ci
 on:
   pull_request:

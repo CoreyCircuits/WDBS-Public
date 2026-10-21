@@ -18,7 +18,9 @@ Run suites one at a time; parallel test stacks can exhaust a small host.
 
 ## Known expected results in this export
 
-The results below were observed when the export was assembled (Python 3.14.8, Linux). They are not a promise for other interpreters.
+The suite was run offline on Python 3.14.8 (Linux) when the export was assembled, and the GitHub Actions workflow
+(`.github/workflows/ci.yml`) runs it on Python 3.12 (reported green by the maintainer for the initial commit). No other
+interpreter version is claimed.
 
 - The synthetic FS42-style database is built from `tests/fixtures/wdbs_fs42_min_schema.sql`, a minimal schema authored
   from the columns WDBS reads and writes. It is a subset: real FS42 databases may differ in columns, types, defaults,
