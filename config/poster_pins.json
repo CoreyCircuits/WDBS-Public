@@ -1,0 +1,11 @@
+{
+  "_comment": "Posters to keep in Sonarr instead of TheTVDB's primary one. Applied by prodesk/poster_pins.py (wdbs-poster-pins.timer). Key by TVDB id; poster must be an artworks.thetvdb.com URL.",
+  "pins": [
+    {
+      "tvdb": 1000001,
+      "title": "Example Show",
+      "poster": "https://artworks.thetvdb.com/banners/posters/example-poster.jpg",
+      "why": "example pin: keep the original-run poster instead of the revival's"
+    }
+  ]
+}

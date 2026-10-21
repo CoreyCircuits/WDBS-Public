@@ -1,0 +1,6 @@
+#!/bin/sh
+# WDBS CLI wrapper: runs the control plane with the FieldStation42 venv interpreter.
+WDBS_HOME="$(dirname "$(readlink -f "$0")")/.."
+PY="${WDBS_PYTHON:-/path/to/FieldStation42/env/bin/python}"
+[ -x "$PY" ] || PY=python3
+PYTHONPATH="$WDBS_HOME${PYTHONPATH:+:$PYTHONPATH}" exec "$PY" -m wdbs "$@"

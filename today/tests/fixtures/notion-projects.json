@@ -1,0 +1,110 @@
+{
+ "results": [
+  {
+   "object": "page",
+   "properties": {
+    "Name": {
+     "type": "title",
+     "title": [
+      {
+       "plain_text": "Example project A"
+      }
+     ]
+    },
+    "Lane": {
+     "type": "select",
+     "select": {
+      "name": "Burner"
+     }
+    },
+    "Next Action": {
+     "type": "rich_text",
+     "rich_text": []
+    },
+    "Vault": {
+     "type": "select",
+     "select": {
+      "name": "Home"
+     }
+    },
+    "Deadline": {
+     "type": "date",
+     "date": null
+    }
+   }
+  },
+  {
+   "object": "page",
+   "properties": {
+    "Name": {
+     "type": "title",
+     "title": [
+      {
+       "plain_text": "Example project B"
+      }
+     ]
+    },
+    "Lane": {
+     "type": "select",
+     "select": {
+      "name": "Burner"
+     }
+    },
+    "Next Action": {
+     "type": "rich_text",
+     "rich_text": [
+      {
+       "plain_text": "Example next action"
+      }
+     ]
+    },
+    "Vault": {
+     "type": "select",
+     "select": {
+      "name": "Studio"
+     }
+    },
+    "Deadline": {
+     "type": "date",
+     "date": {
+      "start": "2026-11-03"
+     }
+    }
+   }
+  },
+  {
+   "object": "page",
+   "properties": {
+    "Name": {
+     "type": "title",
+     "title": [
+      {
+       "plain_text": "Example project C"
+      }
+     ]
+    },
+    "Lane": {
+     "type": "select",
+     "select": {
+      "name": "Burner"
+     }
+    },
+    "Next Action": {
+     "type": "rich_text",
+     "rich_text": []
+    },
+    "Vault": {
+     "type": "select",
+     "select": {
+      "name": "Home"
+     }
+    },
+    "Deadline": {
+     "type": "date",
+     "date": null
+    }
+   }
+  }
+ ],
+ "has_more": false
+}

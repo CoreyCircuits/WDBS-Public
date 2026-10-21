@@ -1,0 +1,51 @@
+/* WDBS Stream - Search tab (search.js). 10-foot sizes; focus = white + lift like the cards and buttons in app.css. */
+body.search .scrim { background:
+  linear-gradient(180deg, rgba(13,22,22,.88) 0px, rgba(13,22,22,.55) 260px),
+  linear-gradient(90deg, rgba(13,22,22,.9) 0%, rgba(13,22,22,.6) 50%, rgba(13,22,22,.35) 100%),
+  linear-gradient(0deg, rgba(13,22,22,.95) 0%, rgba(13,22,22,.5) 50%); }
+
+.search-view { position: absolute; inset: 0; }
+
+/* the query, large, with a caret; result count on the right */
+.sq { position: absolute; left: var(--pad); right: var(--pad); top: 150px; height: 110px; display: flex;
+  align-items: center; gap: 6px; border-bottom: 3px solid rgba(246,241,232,.25); }
+.sqt { font-family: "Archivo Black", sans-serif; font-size: 80px; line-height: 1; text-transform: uppercase;
+  white-space: pre; overflow: hidden; text-overflow: ellipsis; max-width: 1400px; }
+.sqt.ph { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 64px; text-transform: none;
+  color: var(--muted); }
+.caret { width: 6px; height: 76px; background: var(--honey); border-radius: 3px; animation: sq-blink 1.1s steps(1) infinite; }
+.sqt.ph + .caret { order: -1; margin-right: 18px; }
+@keyframes sq-blink { 50% { opacity: 0; } }
+.scount { margin-left: auto; font-size: 40px; font-weight: 700; color: var(--honey); white-space: nowrap; }
+
+/* focused result: name + facts under the query (results mode) */
+.sinfo { position: absolute; left: var(--pad); right: var(--pad); top: 272px; display: flex; gap: 24px;
+  align-items: baseline; opacity: 0; transition: opacity .3s var(--ease); white-space: nowrap; overflow: hidden; }
+.sinfo .nm { font-size: 46px; font-weight: 700; }
+.sinfo .metaline { flex-wrap: nowrap; }
+.search-view.results .sinfo { opacity: 1; }
+
+/* keyboard: 13 columns x 3 rows of big keys */
+.kb { position: absolute; left: var(--pad); right: var(--pad); top: 290px; display: flex; flex-direction: column; gap: 14px;
+  transition: opacity .35s var(--ease), transform .45s var(--ease); }
+.kbrow { display: grid; grid-template-columns: repeat(13, 1fr); gap: 14px; }
+.key { height: 100px; border-radius: 14px; background: linear-gradient(180deg, #1c2a2b 0 49%, #111b1c 51% 100%); box-shadow: inset 0 0 0 1px rgba(246,241,232,.1); font-size: 56px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s var(--ease), background .15s, color .15s, box-shadow .2s; }
+.key.wide { font-size: 38px; letter-spacing: .06em; color: var(--muted); }
+.key svg { display: block; }
+.key.focus { background: var(--paper); color: var(--ink); box-shadow: 0 16px 34px rgba(0,0,0,.55), 0 0 0 4px var(--honey); transform: scale(1.12); z-index: 1;
+  box-shadow: 0 16px 34px rgba(0,0,0,.55); }
+.search-view.results .kb { opacity: 0; transform: translateY(-50px); }
+
+/* zone under the keyboard: quick picks, messages, or result rows (which rise into the keyboard's place) */
+.sz { position: absolute; left: 0; right: 0; top: 670px; bottom: 0; transition: transform .45s var(--ease); }
+.search-view.results .sz { transform: translateY(-310px); }
+.sz-inner { transition: transform .45s var(--ease); }
+.sz .row h2 .n { font-size: 36px; color: var(--muted); margin-left: 10px; }
+.smsg { margin: 30px var(--pad) 0; font-size: 40px; color: var(--muted); }
+.smsg .spinner { margin-top: 10px; }
+.spicks { padding: 0 var(--pad); }
+.spicks h2 { margin: 0 0 22px; font-size: 44px; font-weight: 700; color: var(--muted); }
+.spicks .chips { display: flex; gap: 16px; flex-wrap: nowrap; overflow: hidden; }
+.spicks .chip { font-size: 40px; text-transform: uppercase; padding: 10px 34px; background: rgba(246,241,232,.1); white-space: nowrap; }

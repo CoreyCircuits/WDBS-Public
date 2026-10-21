@@ -1,0 +1,1 @@
+{"properties": {"periods": [{"name": "Overnight", "isDaytime": false, "temperature": 56, "shortForecast": "Mostly Clear"}, {"name": "Monday", "isDaytime": true, "temperature": 79, "shortForecast": "Sunny"}, {"name": "Monday Night", "isDaytime": false, "temperature": 57, "shortForecast": "Clear"}]}}

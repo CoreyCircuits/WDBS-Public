@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="en" data-pal="drive-in" data-sky="night" data-mode="build">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WDBS Today</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+/* WDBS Today, Channel 3 on the bedroom TV host. Street / UrBling cut, drive-in palette, brush-script day tag.
+   Fixed 1920x1080 stage, scaled to fit. FS42 renders web channels in QtWebEngine with
+   software rendering, so everything gritty (grain, halftone, spray, drips) is painted
+   once, and the only continuous motion is three small transform animations at the clock. */
+
+:root{
+  --grain-light:none;
+--grain-dark:none;
+  --tag-font:'Mustang','Knewave','Kaushan Script',cursive;
+  --goth:'Grenze Gotisch','UnifrakturMaguntia',serif;
+  --stencil:'Big Shoulders Stencil Display','Stardos Stencil','Impact',sans-serif;
+  --body:'Barlow Semi Condensed','Arial Narrow','Roboto Condensed',sans-serif;
+  --acc:var(--acc-build);
+  color-scheme:dark;
+  /* Drive-in, night: #A77E5C tan, #EADFAD cream, #B73F1D rust, on espresso black */
+  --bg1:#231711; --bg2:#0f0a07;
+  --floor:#070504; --floor-ink:#EADFAD; --floor-warn:#ff9a6e;
+  --panel:#1d140f; --panel-deep:#140e0a;
+  --ink:#EADFAD; --ink-dim:#cdbf95; --ink-faint:#a08e70;
+  --hot:#e2744c; --burn:#B73F1D; --warn:#ff8a5c;
+  --line:#3a2a1f; --pin1:#B73F1D; --pin2:#A77E5C; --pin3:#EADFAD;
+  --outline:#000; --shadow:#B73F1D;
+  --bezel:linear-gradient(172deg,#fff7e6 0%,#e6d3ad 30%,#6e5139 49%,#fff4dc 60%,#b8996f 100%);
+  --port:conic-gradient(from 210deg,#fff7e6,#cbb28a,#5a4130,#f3e6c8,#fff7e6,#b89a6e,#4d3727,#e8d7b3,#fff7e6);
+  --fin-a:#fff7e6; --fin-b:#d8c29c; --fin-c:#5a4130; --fin-d:#f3e6c8; --fin-e:#a88b62;
+  --face1:#5a2a17; --face2:#3a1a0e; --face3:#1a0d07; --face-ring:#EADFAD; --dot:#80401f;
+  --time-grad:linear-gradient(180deg,#fffbea 0%,#EADFAD 44%,#b98f5f 52%,#fffbea 62%,#f1e2b5 100%);
+  --ampm:#d4b98f;
+  --iris:linear-gradient(90deg,#B73F1D 0%,#A77E5C 55%,#EADFAD 100%);
+  --acc-build:#e2744c; --acc-field:#d4a56f; --acc-reset:#EADFAD;
+  --w1:#B73F1D; --w2:#A77E5C; --w3:#5c3a24; --w4:#EADFAD; --w5:#2e1d14; --wedge-op:.8;
+  --force:#EADFAD; --echo:#a08e70; --spark:#EADFAD;
+  --sticker:#EADFAD; --sticker-ink:#000; --sil:#000; --flame-in:#EADFAD;
+  --grain:var(--grain-light);
+}
+:root[data-sky="day"]{
+  color-scheme:light;
+  /* Drive-in, day: poster stock */
+  --bg1:#EADFAD; --bg2:#dccd95;
+  --floor:#2a1a12; --floor-ink:#EADFAD; --floor-warn:#ffa27a;
+  --panel:#f5ecc4; --panel-deep:#e4d6a1;
+  --ink:#1e130d; --ink-dim:#4d3a2c; --ink-faint:#6b5745;
+  --hot:#B73F1D; --burn:#B73F1D; --warn:#9e2a0e;
+  --line:#d3c28a; --pin1:#B73F1D; --pin2:#A77E5C; --pin3:#1e130d;
+  --outline:#1a100a; --shadow:#B73F1D;
+  --face1:#fffbe8; --face2:#f1e6bd; --face3:#d8c38d; --face-ring:#B73F1D; --dot:#d2ae80;
+  --time-grad:linear-gradient(180deg,#1e130d 0%,#6e2610 44%,#B73F1D 52%,#6e2610 62%,#B73F1D 100%);
+  --ampm:#B73F1D;
+  --iris:linear-gradient(90deg,#1e130d 0%,#B73F1D 50%,#A77E5C 100%);
+  --acc-build:#B73F1D; --acc-field:#86552e; --acc-reset:#4d3a2c;
+  --w1:#B73F1D; --w2:#A77E5C; --w3:#1e130d; --w4:#c99f70; --w5:#d98a5f; --wedge-op:.85;
+  --force:#1e130d; --echo:#A77E5C; --spark:#B73F1D;
+  --sticker:#B73F1D; --sticker-ink:#EADFAD; --sil:#2a1a12; --flame-in:#EADFAD;
+  --grain:var(--grain-dark);
+}
+:root[data-mode="field"]{--acc:var(--acc-field)}
+:root[data-mode="reset"]{--acc:var(--acc-reset)}
+
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{background:var(--bg2);color:var(--ink);font-family:var(--body)}
+body.kiosk{overflow:hidden;height:100%}
+#viewport{position:relative;width:100%;overflow:hidden;background:var(--bg2)}
+#stage{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--bg2)}
+
+/* ---------- background ---------- */
+#bg,#bgf{position:absolute;inset:0;width:1920px;height:1080px}
+#rays{position:absolute;inset:0;width:1920px;height:1080px;overflow:visible;transform-origin:400px 520px;will-change:transform}
+#grain{position:absolute;inset:0;background-image:var(--grain);pointer-events:none}
+.s1{stop-color:var(--bg1)}.s2{stop-color:var(--bg2)}
+.fa{stop-color:var(--fin-a)}.fb{stop-color:var(--fin-b)}.fc{stop-color:var(--fin-c)}.fd{stop-color:var(--fin-d)}.fe{stop-color:var(--fin-e)}
+.wedges polygon{fill-opacity:var(--wedge-op);stroke:var(--outline);stroke-width:3;stroke-linejoin:round}
+.w1{fill:var(--w1)}.w2{fill:var(--w2)}.w3{fill:var(--w3)}.w4{fill:var(--w4)}.w5{fill:var(--w5)}
+.dA{fill:var(--w4)}.dB{fill:var(--hot)}.dC{fill:var(--w2)}
+.force{stroke:var(--force)}
+.arc-a{stroke:var(--hot)}.arc-b{stroke:var(--acc)}.arc-c{stroke:var(--ink)}
+.echo{stroke:var(--echo)}
+.orbit-line{stroke:var(--ink-dim)}
+.spark{fill:var(--spark);stroke:var(--outline);stroke-width:2}
+.spray{fill:var(--acc)}
+.fin{stroke:var(--outline);stroke-width:5;stroke-linejoin:round}
+.flame-out{fill:var(--hot);stroke:var(--outline);stroke-width:4;stroke-linejoin:round}
+.flame-in{fill:var(--flame-in)}
+.sil{fill:var(--sil)}
+.wire{stroke:var(--sil);fill:none}
+.floor{fill:var(--floor)}
+.fl1{stroke:var(--pin1)}.fl2{stroke:var(--pin2)}.fl3{stroke:var(--pin3)}
+
+/* ---------- header ---------- */
+header{position:absolute;left:96px;right:96px;top:44px;height:108px;display:flex;align-items:center;gap:36px}
+.hello{flex:none;font-family:var(--goth);font-weight:800;font-size:70px;line-height:1;letter-spacing:.5px;text-shadow:4px 4px 0 var(--shadow)}
+.speed{flex:1;display:flex;flex-direction:column;gap:6px;min-width:60px}
+.speed i{display:block;height:9px;border-radius:5px;border:2px solid var(--outline);background:var(--pin1)}
+.speed i:nth-child(2){margin-left:22px;background:var(--pin2)}
+.speed i:nth-child(3){margin-left:44px;background:var(--pin3)}
+.datebar{flex:none;text-align:right}
+.datebar .date{font-weight:700;font-size:38px;line-height:1.1;text-transform:uppercase;letter-spacing:.5px}
+.datebar .wx{font-weight:600;font-size:26px;color:var(--ink-dim);margin-top:4px;white-space:nowrap;text-transform:uppercase;letter-spacing:.5px}
+.datebar .wx b{font-family:var(--stencil);font-weight:800;color:var(--hot);font-size:40px;vertical-align:-2px;text-shadow:-2px 0 0 var(--outline),2px 0 0 var(--outline),0 -2px 0 var(--outline),0 2px 0 var(--outline),3px 3px 0 var(--outline)}
+.datebar .wx .alert{color:var(--warn)}
+.sticker{display:inline-block;background:var(--sticker);color:var(--sticker-ink);border:3px solid var(--outline);
+  box-shadow:4px 4px 0 var(--outline);font-family:var(--body);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.chip{font-size:17px;line-height:1;padding:6px 10px;margin-left:14px;transform:rotate(3deg);vertical-align:middle}
+
+/* ---------- chrome bezels: streamline lines, inked like a sticker ---------- */
+.bezel{position:absolute;background:var(--bezel);padding:4px;box-shadow:0 0 0 4px var(--outline),12px 12px 0 4px var(--shadow)}
+.panel{position:relative;width:100%;height:100%;background-color:var(--panel);background-image:var(--grain);
+  box-shadow:
+    inset 0 0 0 3px var(--pin1),
+    inset 0 0 0 9px var(--panel),
+    inset 0 0 0 12px var(--pin2),
+    inset 0 0 0 17px var(--panel),
+    inset 0 0 0 19px var(--pin3);
+}
+
+/* ---------- porthole clock ---------- */
+.port{position:absolute;left:150px;top:270px;width:500px;height:500px;border-radius:50%;padding:18px;
+  background:var(--port);
+  box-shadow:0 0 0 5px var(--outline),12px 12px 0 5px var(--shadow)}
+.face{position:relative;width:100%;height:100%;border-radius:50%;border:4px solid var(--outline);
+  background-image:var(--grain),radial-gradient(circle at 50% 38%,var(--face1) 0%,var(--face2) 52%,var(--face3) 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+.face::before{content:"";position:absolute;inset:0;border-radius:50%;
+  background-image:radial-gradient(circle,var(--dot) 2.2px,transparent 2.8px);background-size:13px 13px;
+  -webkit-mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 35%,transparent 62%);mask-image:linear-gradient(to top,#000 0%,rgba(0,0,0,.5) 35%,transparent 62%)}
+.face::after{content:"";position:absolute;inset:16px;border-radius:50%;border:3px dashed var(--face-ring);opacity:.8}
+.time-wrap{position:relative;line-height:.86}
+.time,.time-shadow{font-family:var(--stencil);font-weight:800;font-size:214px;letter-spacing:-2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.time{position:relative;background:var(--time-grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:3px var(--outline)}
+.time-shadow{position:absolute;left:8px;top:8px;color:var(--shadow);-webkit-text-stroke:3px var(--outline)}
+.ampm{position:relative;font-weight:700;font-size:32px;letter-spacing:10px;color:var(--ampm);margin-top:10px;padding-left:10px}
+#sun{position:absolute;left:452px;top:706px;font-size:25px;padding:7px 16px;transform:rotate(-7deg);white-space:nowrap}
+
+/* ---------- motion around the clock ---------- */
+@keyframes spin{to{transform:rotate(360deg)}}
+.halo{position:absolute;left:110px;top:230px;width:580px;height:580px;will-change:transform}
+.halo svg{display:block}
+.halo-dash{stroke:var(--ink-dim)}
+.halo-arc{stroke:var(--acc)}
+.halo-arc-o{stroke:var(--outline)}
+.sec{position:absolute;left:150px;top:270px;width:500px;height:500px;pointer-events:none}
+.sec i{position:absolute;left:50%;top:0;will-change:transform;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:var(--acc);border:3px solid var(--outline)}
+.orbit{position:absolute;left:400px;top:520px;width:0;height:0;transform:rotate(-16deg) scaleY(.26)}
+.orbit-spin{position:absolute;left:0;top:0;width:0;height:0;will-change:transform}
+.orbit-arm{position:absolute;left:330px;top:0;width:0;height:0}
+.orbit-counter{position:absolute;left:0;top:0;width:0;height:0;will-change:transform}
+.orbit-sat{position:absolute;left:-9px;top:-9px;width:18px;height:18px;border-radius:50%;background:var(--hot);border:3px solid var(--outline);transform:scaleY(3.846)}
+
+/* ---------- music-reactive bits (driven by the analyser in script; transforms only) ---------- */
+#flames{position:absolute;left:-20px;top:440px;width:190px;height:160px;overflow:visible;transform-origin:182px 80px;will-change:transform}
+.halo svg{transform-origin:290px 290px;will-change:transform}
+.speed i{transform-origin:left center;will-change:transform}
+.tune .eq{flex:none;display:flex;align-items:flex-end;gap:3px;height:22px}
+.tune .eq i{display:block;width:5px;height:22px;background:var(--acc);border:2px solid var(--outline);transform-origin:bottom;transform:scaleY(.2);will-change:transform}
+
+/* ---------- mode tag ---------- */
+#plaque{left:96px;top:836px;width:680px;height:124px;border-radius:62px}
+#plaque .panel{border-radius:58px;display:flex;flex-direction:column;justify-content:center;padding:0 48px;overflow:hidden;background-color:var(--panel-deep)}
+#plaque .panel::before{content:"";position:absolute;left:10px;top:-30px;width:440px;height:150px;
+  background:radial-gradient(ellipse at 45% 50%,var(--acc) 0%,transparent 68%);opacity:.28}
+.mode{position:relative;font-family:var(--tag-font);font-size:58px;line-height:1.02;letter-spacing:.08em;word-spacing:.1em;color:var(--acc);white-space:nowrap;
+  -webkit-text-stroke:2px var(--outline);text-shadow:3px 3px 0 var(--outline);transform:rotate(-3deg);transform-origin:left center}
+.directive{position:relative;font-weight:700;font-size:23px;color:var(--ink);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase;letter-spacing:.06em}
+#drips{position:absolute;left:170px;top:958px;width:420px;height:90px;overflow:visible}
+.drip{fill:var(--acc);stroke:var(--outline);stroke-width:3}
+
+/* ---------- right now ---------- */
+#onnow{left:800px;top:180px;width:1024px;height:224px;border-radius:112px}
+#onnow .panel{border-radius:108px;padding:24px 88px;display:flex;flex-direction:column;justify-content:space-between}
+#onnow .panel > *{flex:none}
+.on-top{display:flex;align-items:center;gap:20px}
+.on-label{display:inline-block;background:var(--outline);color:var(--acc);font-weight:700;font-size:22px;letter-spacing:.14em;text-transform:uppercase;padding:4px 12px;transform:rotate(-2deg)}
+.on-range{margin-left:auto;font-family:var(--stencil);font-weight:700;font-size:34px;color:var(--hot);font-variant-numeric:tabular-nums;white-space:nowrap}
+.on-title{font-weight:600;font-size:52px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.on-barrow{display:flex;align-items:center;gap:22px}
+.bar{flex:1;height:20px;border-radius:10px;background:var(--panel-deep);border:3px solid var(--outline);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background-image:repeating-linear-gradient(-45deg,rgba(0,0,0,.22) 0 8px,transparent 8px 16px),var(--iris)}
+.on-left{font-weight:700;font-size:28px;white-space:nowrap;font-variant-numeric:tabular-nums;text-transform:uppercase}
+.on-foot{display:flex;gap:28px;font-weight:500;font-size:25px;color:var(--ink-dim);min-width:0}
+.on-note{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:italic}
+.on-next{flex:none;max-width:56%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.on-next b{font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.08em}
+.on-next em{font-style:normal;font-family:var(--stencil);font-weight:700;font-size:1.2em;color:var(--hot);margin:0 8px}
+.on-range small,.on-next small,.row .t small{font-family:var(--body);font-weight:700;font-size:.55em;margin-left:3px;letter-spacing:.05em;text-transform:uppercase}
+
+/* ---------- rotating segment (bullet-nose panel) ---------- */
+#segment{left:800px;top:432px;width:1024px;height:528px;border-radius:44px 264px 264px 44px}
+#segment .panel{border-radius:40px 260px 260px 40px;padding:36px 200px 34px 64px}
+.seg{transition:opacity .45s ease}
+.seg.out{opacity:0}
+.seg-head{display:flex;align-items:baseline;gap:22px;margin-bottom:14px}
+.seg-head h2{font-family:var(--goth);font-weight:800;font-size:62px;line-height:1.05;text-shadow:3px 3px 0 var(--shadow)}
+.seg-head .src{font-weight:700;font-size:19px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.14em}
+.row{display:flex;align-items:center;gap:26px;min-height:68px;padding:6px 0;border-bottom:2px dashed var(--line)}
+.row:last-child{border-bottom:0}
+.row .t{flex:none;width:150px;font-family:var(--stencil);font-weight:700;font-size:38px;color:var(--hot);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .num{flex:none;width:54px;height:54px;border-radius:50%;background:var(--acc);border:3px solid var(--outline);box-shadow:3px 3px 0 var(--outline);color:var(--outline);
+  display:flex;align-items:center;justify-content:center;font-family:var(--stencil);font-weight:800;font-size:32px}
+.row .what{flex:1;min-width:0;font-weight:500;font-size:34px;line-height:1.15}
+.row .what .main{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .sub{display:block;font-size:23px;color:var(--ink-dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .sub.warn{color:var(--warn);font-weight:600}
+.row .right{flex:none;text-align:right;font-weight:600;font-size:24px;color:var(--ink-dim);white-space:nowrap;text-transform:uppercase}
+.row .stick{flex:none;text-align:center;padding:4px 14px 6px;transform:rotate(4deg);font-size:15px;line-height:1.1}
+.row .stick b{display:block;font-family:var(--stencil);font-weight:800;font-size:38px;line-height:1;letter-spacing:0}
+.mk{flex:none;width:24px;height:24px;margin:0 14px 0 6px;border:3px solid var(--outline)}
+.mk.high{background:var(--hot);transform:rotate(45deg)}
+.mk.medium{background:var(--panel);box-shadow:inset 0 0 0 4px var(--hot);transform:rotate(45deg)}
+.mk.burn{background:var(--burn);transform:rotate(45deg)}
+.mk.low{width:16px;height:16px;margin:0 18px 0 10px;border-radius:50%;background:var(--ink-faint)}
+.mk.box{width:30px;height:30px;margin:0 10px 0 2px;background:var(--panel);border-color:var(--ink);box-shadow:3px 3px 0 var(--acc)}
+.empty{font-size:36px;font-weight:500;color:var(--ink-dim);line-height:1.3;max-width:640px;padding-top:12px}
+.more{font-weight:700;font-size:21px;color:var(--ink-faint);padding-top:8px;text-transform:uppercase;letter-spacing:.08em}
+.rotor{position:absolute;right:98px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:18px}
+.rotor span{width:22px;height:22px;border-radius:50%;border:3px solid var(--ink-faint);background:var(--panel-deep)}
+.rotor span.on{background:var(--acc);border-color:var(--outline)}
+/* money segment (the optional Ledger service summary): same rows, the amount set like the clock times */
+.row .amt{flex:none;font-family:var(--stencil);font-weight:800;font-size:46px;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row .amt.out{color:var(--hot)}
+.row .stick.money b{font-size:34px;letter-spacing:.04em}
+.row .stick.watch,.row .stick.short{background:var(--hot);color:var(--outline)}
+
+/* ---------- info line on the street ---------- */
+#info{position:absolute;left:96px;right:96px;top:1004px;height:56px;display:flex;align-items:center;gap:20px}
+#info .spark-ico{flex:none;width:28px;height:28px;fill:var(--acc)}
+.info-win{position:relative;flex:1;height:100%}
+.info-item{position:absolute;inset:0;display:flex;align-items:center;font-weight:600;font-size:27px;color:var(--floor-ink);
+  text-transform:uppercase;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .6s ease}
+.info-item.warn{color:var(--floor-warn)}
+.info-item.hide{opacity:0}
+.tune{flex:none;max-width:34%;display:flex;align-items:center;gap:12px;font-weight:600;font-size:23px;color:var(--floor-ink);opacity:.8;white-space:nowrap;overflow:hidden;text-transform:uppercase;letter-spacing:.04em}
+.tune svg{flex:none;width:22px;height:22px;fill:var(--acc)}
+.tune span{overflow:hidden;text-overflow:ellipsis}
+
+/* overnight dimmer for the bedroom */
+#dimmer{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 2s ease}
+body.dim #dimmer{opacity:.45}
+
+/* ---------- preview controls (hidden on the TV host) ---------- */
+#preview{display:none;max-width:1200px;margin:0 auto;padding:18px 16px 28px;font-size:16px;color:var(--ink-dim)}
+body.preview #preview{display:block}
+#preview p{margin-bottom:12px;line-height:1.5}
+#preview .grp{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px}
+#preview .grp span{min-width:64px;color:var(--ink-faint);text-transform:uppercase;font-weight:700;letter-spacing:.08em;font-size:13px}
+#preview button{font:inherit;font-weight:600;color:var(--ink);background:var(--panel);border:2px solid var(--outline);border-radius:4px;padding:6px 12px;cursor:pointer;box-shadow:3px 3px 0 var(--outline)}
+#preview button[aria-pressed="true"]{background:var(--acc);color:var(--outline)}
+#preview button:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  .seg,.info-item,#dimmer{transition:none}
+}
+</style>
+</head>
+<body>
+<div id="viewport">
+<div id="stage">
+
+  <svg id="bg" viewBox="0 0 1920 1080" aria-hidden="true">
+    <defs>
+      <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" class="s1"/>
+        <stop offset="1" class="s2"/>
+      </linearGradient>
+      <linearGradient id="finG" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" class="fa"/>
+        <stop offset=".35" class="fb"/>
+        <stop offset=".55" class="fc"/>
+        <stop offset=".75" class="fd"/>
+        <stop offset="1" class="fe"/>
+      </linearGradient>
+      <pattern id="dotA" width="14" height="14" patternUnits="userSpaceOnUse"><circle class="dA" cx="7" cy="7" r="3.6"/></pattern>
+      <pattern id="dotB" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(30)"><circle class="dB" cx="5" cy="5" r="2.2"/></pattern>
+      <pattern id="dotC" width="18" height="18" patternUnits="userSpaceOnUse" patternTransform="rotate(-20)"><circle class="dC" cx="9" cy="9" r="5"/></pattern>
+    </defs>
+    <rect width="1920" height="1080" fill="url(#ground)"/>
+
+    <!-- power lines off a pole at the right edge -->
+    <g class="wire" stroke-width="3">
+      <path d="M 1868 150 Q 980 330 -20 206"/>
+      <path d="M 1868 168 Q 980 356 -20 236" stroke-width="2"/>
+    </g>
+    <g class="sil">
+      <rect x="1862" y="96" width="14" height="900"/>
+      <rect x="1826" y="146" width="86" height="10"/>
+      <rect x="1834" y="164" width="70" height="8"/>
+      <rect x="1832" y="136" width="8" height="12"/><rect x="1896" y="136" width="8" height="12"/>
+    </g>
+
+  </svg>
+
+  <!-- the force fan swings on the clock's centre; own layer so the TV host never repaints the background for it -->
+  <svg id="rays" viewBox="0 0 1920 1080" aria-hidden="true">
+    <!-- Balla-style force wedges fanning out from the clock, inked and halftoned -->
+    <g class="wedges">
+      <polygon class="w1" points="400,520 2133,-27 2133,212"/>
+      <polygon points="430,500 2133,167 2133,303" fill="url(#dotB)"/>
+      <polygon class="w2" points="400,520 2133,360 2133,623"/>
+      <polygon class="w5" points="440,540 2133,566 2133,725"/>
+      <polygon class="w1" points="400,520 2133,794 2133,1158 1882,1158"/>
+      <polygon points="420,560 1449,1158 1722,1158" fill="url(#dotA)"/>
+      <polygon class="w3" points="400,520 970,-73 1289,-73"/>
+      <polygon points="380,500 582,-73 742,-73" fill="url(#dotC)"/>
+    </g>
+    <!-- lines of force -->
+    <g class="force" stroke-width="2" opacity=".14" fill="none">
+      <line x1="400" y1="520" x2="2133" y2="87"/>
+      <line x1="400" y1="520" x2="2133" y2="463"/>
+      <line x1="400" y1="520" x2="2133" y2="680"/>
+      <line x1="400" y1="520" x2="1130" y2="-73"/>
+    </g>
+
+  </svg>
+
+  <svg id="bgf" viewBox="0 0 1920 1080" aria-hidden="true">
+    <g class="wedges">
+      <polygon class="w4" points="1920,120 1500,300 1920,170"/>
+      <polygon class="w4" points="1920,880 1380,960 1920,930"/>
+      <polygon class="w3" points="1180,0 1040,180 1260,0"/>
+    </g>
+
+    <!-- speed arcs -->
+    <g fill="none" stroke-linecap="round">
+      <path class="arc-a" d="M 700 250 A 390 390 0 0 1 700 790" stroke-width="5" opacity=".6"/>
+      <path class="arc-b" d="M 752 190 A 470 470 0 0 1 752 850" stroke-width="3" opacity=".55" stroke-dasharray="6 16"/>
+      <path class="arc-c" d="M 850 40 A 660 660 0 0 1 850 1000" stroke-width="2" opacity=".2" stroke-dasharray="2 22"/>
+    </g>
+
+    <!-- motion echoes: the clock's trail -->
+    <g class="echo" fill="none" stroke-width="2">
+      <circle cx="330" cy="520" r="252" opacity=".26"/>
+      <circle cx="262" cy="520" r="252" opacity=".15"/>
+      <circle cx="196" cy="520" r="252" opacity=".08"/>
+    </g>
+
+    <!-- overspray, filled in by script -->
+    <g class="spray" id="spray"></g>
+
+    <!-- orbit path the satellite rides -->
+    <ellipse class="orbit-line" cx="400" cy="520" rx="330" ry="86" transform="rotate(-16 400 520)" fill="none" stroke-width="2" opacity=".45"/>
+
+    <!-- swept blades -->
+    <path class="fin" fill="url(#finG)" d="M 236 356 C 200 312 150 270 36 220 C 68 250 84 270 90 292 C 70 288 54 292 40 300 C 90 320 132 352 206 432 Z"/>
+    <path class="fin" fill="url(#finG)" d="M 236 684 C 200 728 150 770 36 820 C 68 790 84 770 90 748 C 70 752 54 748 40 740 C 90 720 132 688 206 608 Z"/>
+
+    <!-- sparkles -->
+    <g class="spark">
+      <path d="M 770 190 L 778 212 L 800 220 L 778 228 L 770 250 L 762 228 L 740 220 L 762 212 Z"/>
+      <path d="M 742 896 L 747 911 L 762 916 L 747 921 L 742 936 L 737 921 L 722 916 L 737 911 Z"/>
+    </g>
+
+    <!-- skyline and street -->
+    <path class="sil" d="M -10 1080 L -10 900 L 40 900 L 40 870 L 70 870 L 70 918 L 110 918 L 110 890 L 150 890 L 150 930 L 760 930 L 760 896 L 790 896 L 790 862 L 812 862 L 812 930 L 1840 930 L 1840 880 L 1862 880 L 1862 850 L 1880 850 L 1880 900 L 1930 900 L 1930 1080 Z"/>
+    <rect class="floor" x="0" y="982" width="1920" height="98"/>
+    <g stroke-linecap="round">
+      <line class="fl1" x1="0" y1="984" x2="1920" y2="984" stroke-width="5"/>
+      <line class="fl2" x1="0" y1="993" x2="1560" y2="993" stroke-width="4"/>
+      <line class="fl3" x1="0" y1="1001" x2="1180" y2="1001" stroke-width="3"/>
+    </g>
+  </svg>
+  <!-- hot-rod flames out the back: own layer so the music can stretch them without repainting the background -->
+  <svg id="flames" viewBox="-20 440 190 160" aria-hidden="true">
+    <path class="flame-out" d="M 162 480 C 124 470 100 450 50 452 C 78 468 90 482 60 492 C 30 500 12 510 -10 520 C 12 530 30 540 60 548 C 90 558 78 572 50 588 C 100 590 124 570 162 560 Z"/>
+    <path class="flame-in" d="M 160 498 C 132 492 116 484 92 488 C 104 498 104 508 74 520 C 104 532 104 542 92 552 C 116 556 132 548 160 542 Z"/>
+  </svg>
+  <div id="grain"></div>
+
+  <header>
+    <div class="hello" id="hello">Morning</div>
+    <div class="speed" aria-hidden="true"><i></i><i></i><i></i></div>
+    <div class="datebar">
+      <div class="date" id="date"></div>
+      <div class="wx" id="wx"></div>
+    </div>
+  </header>
+
+  <div class="orbit" aria-hidden="true"><div class="orbit-spin"><div class="orbit-arm"><div class="orbit-counter"><i class="orbit-sat"></i></div></div></div></div>
+
+  <div class="port"><div class="face">
+    <div class="time-wrap"><span class="time-shadow" id="timeS" aria-hidden="true">8:42</span><span class="time" id="time">8:42</span></div>
+    <div class="ampm" id="ampm">AM</div>
+  </div></div>
+
+  <div class="halo" aria-hidden="true">
+    <svg width="580" height="580" viewBox="0 0 580 580">
+      <circle class="halo-dash" cx="290" cy="290" r="284" fill="none" stroke-width="3" stroke-dasharray="3 13" opacity=".6"/>
+      <path class="halo-arc-o" d="M 290 6 A 284 284 0 0 1 491 89" fill="none" stroke-width="11" stroke-linecap="round"/>
+      <path class="halo-arc" d="M 290 6 A 284 284 0 0 1 491 89" fill="none" stroke-width="5" stroke-linecap="round"/>
+      <path class="halo-arc-o" d="M 290 574 A 284 284 0 0 1 184 553" fill="none" stroke-width="8" stroke-linecap="round"/>
+      <path class="halo-arc" d="M 290 574 A 284 284 0 0 1 184 553" fill="none" stroke-width="3" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="sticker" id="sun"></div>
+  <div class="sec" id="sec" aria-hidden="true"><i id="secBead"></i></div>
+
+  <div class="bezel" id="plaque"><div class="panel">
+    <div class="mode" id="mode">Build day</div>
+    <div class="directive" id="directive"></div>
+  </div></div>
+  <svg id="drips" viewBox="0 0 420 130" aria-hidden="true">
+    <path class="drip" d="M 30 0 C 36 2 40 6 40 12 L 40 46 A 6 6 0 0 1 28 46 L 28 12 C 28 6 26 2 20 0 Z"/>
+    <path class="drip" d="M 118 0 C 122 2 125 6 125 10 L 125 70 A 4.5 4.5 0 0 1 116 70 L 116 10 C 116 6 114 2 110 0 Z"/>
+    <path class="drip" d="M 236 0 C 240 2 243 5 243 9 L 243 28 A 5 5 0 0 1 233 28 L 233 9 C 233 5 231 2 227 0 Z"/>
+    <path class="drip" d="M 330 0 C 334 2 336 5 336 9 L 336 54 A 4 4 0 0 1 328 54 L 328 9 C 328 5 326 2 322 0 Z"/>
+  </svg>
+
+  <div class="bezel" id="onnow"><div class="panel">
+    <div class="on-top"><span class="on-label" id="onLabel">Right now</span><span class="on-range" id="onRange"></span></div>
+    <div class="on-title" id="onTitle"></div>
+    <div class="on-barrow" id="onBarRow"><div class="bar"><i id="onBar"></i></div><span class="on-left" id="onLeft"></span></div>
+    <div class="on-foot"><span class="on-note" id="onNote"></span><span class="on-next" id="onNext"></span></div>
+  </div></div>
+
+  <div class="bezel" id="segment"><div class="panel">
+    <div class="seg" id="seg">
+      <div class="seg-head"><h2 id="segTitle"></h2><span class="src" id="segSrc"></span></div>
+      <div id="segBody"></div>
+    </div>
+    <div class="rotor" id="rotor"></div>
+  </div></div>
+
+  <div id="info">
+    <svg class="spark-ico" viewBox="0 0 26 26" aria-hidden="true"><path d="M13 0 L16 10 L26 13 L16 16 L13 26 L10 16 L0 13 L10 10 Z"/></svg>
+    <div class="info-win" id="infoWin"></div>
+    <div class="tune" id="tune" hidden>
+      <span class="eq" id="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      <span id="tuneTitle"></span>
+    </div>
+  </div>
+
+  <div id="dimmer"></div>
+</div>
+</div>
+
+<div id="preview">
+  <p>Preview with sample data shaped like your real calendar blocks, Notion tasks and Burner projects. On the TV host this bar is hidden and the page reads the live feed from the app host.</p>
+  <div class="grp" id="pvSky"><span>Sky</span>
+    <button type="button" data-sky="">Follow the sun</button>
+    <button type="button" data-sky="day">Day</button>
+    <button type="button" data-sky="night">Night</button>
+  </div>
+  <div class="grp" id="pvMode"><span>Mode</span>
+    <button type="button" data-mode="">Auto</button>
+    <button type="button" data-mode="build">Build day</button>
+    <button type="button" data-mode="field">Field day</button>
+    <button type="button" data-mode="reset">Reset day</button>
+  </div>
+  <div class="grp" id="pvTime"><span>Time</span>
+    <button type="button" data-at="">Live</button>
+    <button type="button" data-at="08:50">8:50 am</button>
+    <button type="button" data-at="10:40">10:40 am</button>
+    <button type="button" data-at="18:30">6:30 pm</button>
+    <button type="button" data-at="23:20">11:20 pm</button>
+  </div>
+  <div class="grp"><span>Segment</span>
+    <button type="button" id="pvPrev">Previous</button>
+    <button type="button" id="pvNext">Next</button>
+    <button type="button" id="pvMusic" hidden>Play music</button>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= config ================= */
+var FEED_URL = 'home.json';
+var FEED_POLL_MS = 60 * 1000;
+var SEGMENT_MS = 18 * 1000;
+var INFO_MS = 8 * 1000;
+var STALE_MIN = 20;
+var RELOAD_AT = [4, 10];                 // daily self-reload on the TV host
+var DEFAULT_LOOK = {palette: 'drive-in', sky: 'auto', motion: true, dim_from: 23, dim_to: 6};
+var DEFAULT_LOC = {lat: 40.0000, lon: -75.0000};
+var PALETTES = ['drive-in'];
+var MODES = ['build', 'field', 'reset'];
+var DEFAULT_MODES = {
+  build: {name: 'Build day', directive: 'Deep blocks first. The rest fits around them.'},
+  field: {name: 'Field day', directive: 'Charge it, pack it, record everything.'},
+  reset: {name: 'Reset day', directive: 'Bare minimum counts today.'}
+};
+
+/* ================= state ================= */
+var qs = new URLSearchParams(location.search);
+var KIOSK = /QtWebEngine/.test(navigator.userAgent) || qs.has('kiosk');
+var simOffset = 0;
+var CLOUD = qs.get('display') === 'cloud';  // Cloud WDBS tuner (wdbs-cloud core.cloud_url)
+var pv = {mode: qs.get('mode') || '', pal: qs.get('palette') || '', sky: qs.get('sky') || ''};
+var DATA = null, SOURCE = 'none', lastGoodAt = null, fetchFailing = false;
+var segs = [], segIdx = -1, segKey = '';
+var infoIdx = -1;
+
+function $(id){ return document.getElementById(id); }
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function now(){ return new Date(Date.now() + simOffset); }
+function pad(n){ return (n < 10 ? '0' : '') + n; }
+function dateKey(d){ return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function addDays(d, n){ var x = new Date(d.getFullYear(), d.getMonth(), d.getDate()); x.setDate(x.getDate() + n); return x; }
+function parseDay(s){ var p = String(s).slice(0, 10).split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+function hm(d){ var h = d.getHours(), m = d.getMinutes(); return (h % 12 || 12) + ':' + pad(m); }
+function hmHtml(d){ return hm(d) + '<small>' + (d.getHours() < 12 ? 'am' : 'pm') + '</small>'; }
+function hmText(d){ return hm(d) + (d.getHours() < 12 ? ' am' : ' pm'); }
+function dur(ms){
+  var m = Math.max(0, Math.round(ms / 60000));
+  if (m < 60) return m + ' min';
+  var h = Math.floor(m / 60), r = m % 60;
+  return h + 'h' + (r ? ' ' + r + 'm' : '');
+}
+function weekday(d){ return d.toLocaleDateString('en-US', {weekday: 'short'}); }
+function monthDay(d){ return d.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}); }
+function store(k, v){ try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } }
+function look(){ return Object.assign({}, DEFAULT_LOOK, (DATA && DATA.look) || {}); }
+
+/* ================= sample data (preview only) ================= */
+function sampleData(){
+  var t = new Date(), d0 = addDays(t, 0), d1 = addDays(t, 1);
+  function at(day, h, m){ var x = new Date(day); x.setHours(h, m, 0, 0); return x.toISOString(); }
+  var blocks = function(day){ return [
+    {title: 'Morning block', start: at(day, 8, 30), end: at(day, 9, 30), note: 'Example note for the morning block.'},
+    {title: 'Priority block', start: at(day, 10, 0), end: at(day, 12, 0), note: 'Example note for the priority block.'},
+    {title: 'Focus block', start: at(day, 13, 0), end: at(day, 16, 0), note: 'Example note for the focus block.'}
+  ]; };
+  return {
+    version: 1, sample: true, generated: new Date().toISOString(),
+    name: 'Example',
+    look: DEFAULT_LOOK, location: DEFAULT_LOC,
+    mode: {key: 'build', reason: 'default'},
+    weather: {temp: 64, sky: 'Clear', high: 78, low: 55,
+      periods: [{name: 'Today', text: 'Sunny, high 78'}, {name: 'Tonight', text: 'Clear, low 55'}], alerts: []},
+    events: blocks(d0).concat(blocks(d1)),
+    tasks: [
+      {title: 'Submit the example report', priority: 'High', area: 'Work & Career', minutes: 90, scheduled: dateKey(addDays(t, -5))},
+      {title: 'Compare example quotes', priority: 'High', area: 'Transportation', minutes: 60, scheduled: dateKey(addDays(t, -6))},
+      {title: 'Follow up on the example report', priority: 'Medium', area: 'Work & Career', minutes: 30, scheduled: dateKey(d1)},
+      {title: 'Review example deadlines', priority: 'High', area: 'School', minutes: 30, scheduled: dateKey(addDays(t, 5))}
+    ],
+    burners: [
+      {title: 'Example project B', vault: 'Studio', next: '', deadline: '2026-11-03'},
+      {title: 'Example project A', vault: 'Home', next: '', deadline: null},
+      {title: 'Example project C', vault: 'Home', next: '', deadline: null}
+    ],
+    money: {available: 250.00, spent_today: 12.50, upcoming_7d: 90, status: 'clear', as_of: new Date().toISOString(), bank_state: 'manual', bank_synced_at: null, bank_data_age_hours: null},
+    routines: {
+      morning: ['Morning item one', 'Morning item two', 'Breakfast', 'Review the day'],
+      night: ['Night item one', 'Night item two', 'Stretch', 'Reflect on the day']
+    },
+    lists: {
+      field: ['Batteries charged', 'Storage cleared', 'Recorder packed', 'Laptop charged', 'Questions prepared'],
+      reset: ['Eat a real meal', 'Drink water', 'Shower', 'One small thing off the list', 'Lights out on time']
+    },
+    music: {tracks: [], volume: 0.7, night_volume: 0.35},
+    ticker: [],
+    health: {}
+  };
+}
+
+/* ================= sun, palette, sky ================= */
+function sunTimes(day, lat, lon){
+  // sunrise equation (about a minute of error); returns local Date objects
+  var rad = Math.PI / 180;
+  var jd = Date.UTC(day.getFullYear(), day.getMonth(), day.getDate(), 12) / 86400000 + 2440587.5;
+  var n = Math.round(jd - 2451545.0 + 0.0008);
+  var js = n - lon / 360;
+  var M = (357.5291 + 0.98560028 * js) % 360;
+  var C = 1.9148 * Math.sin(M * rad) + 0.02 * Math.sin(2 * M * rad) + 0.0003 * Math.sin(3 * M * rad);
+  var L = (M + C + 180 + 102.9372) % 360;
+  var jt = 2451545.0 + js + 0.0053 * Math.sin(M * rad) - 0.0069 * Math.sin(2 * L * rad);
+  var dec = Math.asin(Math.sin(L * rad) * Math.sin(23.44 * rad));
+  var cw = (Math.sin(-0.833 * rad) - Math.sin(lat * rad) * Math.sin(dec)) / (Math.cos(lat * rad) * Math.cos(dec));
+  if (cw < -1 || cw > 1) return null;
+  var w = Math.acos(cw) / rad / 360;
+  function toDate(j){ return new Date((j - 2440587.5) * 86400000); }
+  return {rise: toDate(jt - w), set: toDate(jt + w)};
+}
+function sunToday(t){
+  var loc = (DATA && DATA.location) || DEFAULT_LOC;
+  return sunTimes(t, loc.lat, loc.lon);
+}
+function currentSky(t){
+  var s = pv.sky || look().sky;
+  if (s === 'day' || s === 'night') return s;
+  var sun = sunToday(t);
+  if (!sun) return t.getHours() >= 7 && t.getHours() < 19 ? 'day' : 'night';
+  return t >= sun.rise && t < sun.set ? 'day' : 'night';
+}
+function currentPalette(t){
+  if (pv.pal && PALETTES.indexOf(pv.pal) >= 0) return pv.pal;
+  var p = look().palette;
+  if (p === 'alternate') {
+    var doy = Math.floor((addDays(t, 0) - new Date(t.getFullYear(), 0, 1)) / 86400000);
+    return PALETTES[doy % 2];
+  }
+  return PALETTES.indexOf(p) >= 0 ? p : PALETTES[0];
+}
+function currentMode(){
+  if (pv.mode && MODES.indexOf(pv.mode) >= 0) return pv.mode;
+  var ov = store('wdbs-today-mode');
+  if (ov) { var p = ov.split('|'); if (p[0] === dateKey(now()) && MODES.indexOf(p[1]) >= 0) return p[1]; }
+  var k = DATA && DATA.mode && DATA.mode.key;
+  return MODES.indexOf(k) >= 0 ? k : 'build';
+}
+function modeInfo(key){
+  var m = (DATA && DATA.modes && DATA.modes[key]) || {};
+  return {name: m.name || DEFAULT_MODES[key].name, directive: m.directive || DEFAULT_MODES[key].directive};
+}
+function isDim(t){
+  var L = look(), h = t.getHours();
+  return L.dim_from > L.dim_to ? (h >= L.dim_from || h < L.dim_to) : (h >= L.dim_from && h < L.dim_to);
+}
+
+/* ================= data shaping ================= */
+function events(){
+  return ((DATA && DATA.events) || []).map(function(e){
+    var allDay = !!e.all_day;
+    var s = allDay ? parseDay(e.start) : new Date(e.start);
+    var en = e.end ? (allDay ? parseDay(e.end) : new Date(e.end)) : new Date(s.getTime() + 3600000);
+    return {title: e.title || 'Untitled', note: e.note || '', allDay: allDay, s: s, e: en};
+  }).filter(function(e){ return !isNaN(e.s); }).sort(function(a, b){ return a.s - b.s; });
+}
+function eventsOn(day){
+  var a = addDays(day, 0), b = addDays(day, 1);
+  return events().filter(function(e){ return e.s < b && e.e > a; });
+}
+var PRI = {High: 0, Medium: 1, Low: 2};
+function taskBuckets(t, nextDay){
+  var today = dateKey(t), tmr = dateKey(nextDay || addDays(t, 1)), soon = dateKey(addDays(t, 1));
+  var out = {today: [], tomorrow: []};
+  ((DATA && DATA.tasks) || []).forEach(function(k){
+    var sch = k.scheduled ? String(k.scheduled).slice(0, 10) : '';
+    var due = k.due ? String(k.due).slice(0, 10) : '';
+    if (sch && sch < today) out.today.push(Object.assign({carried: sch}, k));
+    else if (sch === today) out.today.push(k);
+    else if (!sch && due && due <= soon) out.today.push(Object.assign({dueSoon: due}, k));
+    if (sch === tmr) out.tomorrow.push(k);
+  });
+  function sort(a, b){
+    var pa = PRI[a.priority] != null ? PRI[a.priority] : 3, pb = PRI[b.priority] != null ? PRI[b.priority] : 3;
+    if (pa !== pb) return pa - pb;
+    return String(a.scheduled || '9').localeCompare(String(b.scheduled || '9'));
+  }
+  out.today.sort(sort); out.tomorrow.sort(sort);
+  return out;
+}
+
+/* ================= segments ================= */
+function buildSegments(t){
+  var mode = currentMode(), h = t.getHours();
+  var morning = h >= 5 && h < 11, night = h >= 21 || h < 4, evening = h >= 17 || h < 4;
+  var R = (DATA && DATA.routines) || {}, L = (DATA && DATA.lists) || {};
+  var nextDay = h < 4 ? addDays(t, 0) : addDays(t, 1);
+  var tb = taskBuckets(t, nextDay), out = [];
+  if (morning && R.morning && R.morning.length) out.push({key: 'rm', title: 'Morning routine', src: 'Routines', kind: 'steps', items: R.morning});
+  if (night && R.night && R.night.length) out.push({key: 'rn', title: 'Night routine', src: 'Routines', kind: 'steps', items: R.night});
+  if (mode === 'field' && L.field && L.field.length) out.push({key: 'kit', title: 'Field kit', src: 'Pack before you leave', kind: 'list', items: L.field});
+  if (mode === 'reset' && L.reset && L.reset.length) out.push({key: 'min', title: 'Bare minimum', src: 'Each one counts', kind: 'list', items: L.reset});
+  var rest = eventsOn(t).filter(function(e){ return !e.allDay && e.e > t; });
+  if (!night && rest.length) out.push({key: 'today', title: 'Rest of today', src: 'Google Calendar', kind: 'events', items: rest});
+  if (mode !== 'reset' && h >= 4) out.push({key: 'tasks', title: 'Tasks for today', src: 'Notion', kind: 'tasks', items: tb.today,
+    empty: 'Nothing scheduled for today. Pick one from the task inbox in Notion.'});
+  if (evening) {
+    var tm = eventsOn(nextDay).filter(function(e){ return e.allDay || e.s >= addDays(nextDay, 0); });
+    out.push({key: 'tmrw', title: h < 4 ? 'Later today' : 'Tomorrow', src: weekday(nextDay) + ', ' + monthDay(nextDay), kind: 'tomorrow', items: tm, tasks: tb.tomorrow,
+      empty: 'Tomorrow is open. Nothing on the calendar or scheduled in Notion.'});
+  }
+  if (mode !== 'reset') out.push({key: 'burn', title: 'Burners', src: 'Notion projects', kind: 'burners', items: (DATA && DATA.burners) || [],
+    empty: 'No projects in the Burner lane. Move one there in Notion.'});
+  // Money: only the derived Ledger summary ever reaches this page. Hidden on Reset days, like tasks, and never drawn
+  // on the Cloud WDBS screen (display=cloud), whose pixels are streamed to an external relay.
+  if (mode !== 'reset' && !CLOUD && DATA && DATA.money) out.push({key: 'money', title: 'Money', src: 'Ledger', kind: 'money', money: DATA.money, items: []});
+  return out;
+}
+
+function taskRow(k, t){
+  var pr = (k.priority || '').toLowerCase();
+  var mk = pr === 'high' ? 'high' : pr === 'medium' ? 'medium' : 'low';
+  var sub = '', warn = false;
+  if (k.carried) { sub = 'Carried over from ' + weekday(parseDay(k.carried)); warn = true; }
+  else if (k.dueSoon) { sub = k.dueSoon === dateKey(t) ? 'Due today' : 'Due tomorrow'; warn = true; }
+  else if (k.area) sub = k.area;
+  return '<div class="row"><span class="mk ' + mk + '"></span><span class="what"><span class="main">' + esc(k.title) + '</span>' +
+    (sub ? '<span class="sub' + (warn ? ' warn' : '') + '">' + esc(sub) + '</span>' : '') + '</span>' +
+    (k.minutes ? '<span class="right">' + esc(k.minutes) + ' min</span>' : '') + '</div>';
+}
+function eventRow(e){
+  return '<div class="row"><span class="t">' + (e.allDay ? 'All day' : hmHtml(e.s)) + '</span><span class="what"><span class="main">' +
+    esc(e.title) + '</span>' + (e.note ? '<span class="sub">' + esc(e.note) + '</span>' : '') + '</span></div>';
+}
+function usd(n, out){
+  var v = Math.round(Math.abs(Number(n) || 0));
+  return (out && v ? '-' : Number(n) < 0 ? '-' : '') + '$' + v.toLocaleString('en-US');
+}
+var MONEY_STALE_MIN = 30;
+var MONEY_STATUS = {
+  clear: 'Covers the next 7 days of bills',
+  watch: 'Tight once the next 7 days of bills go out',
+  short: 'The next 7 days of bills are more than what\'s there'
+};
+// Bank freshness (see Ledger README "Bank data freshness"). manual = Sandbox/no bank link: nothing to warn about.
+// Anything but manual/fresh must be visibly labelled; the numbers may stay, the confidence may not. Age is computed here from the
+// bank's last successful sync time, so it keeps counting while this page sits on an old home.json.
+function bankAge(iso, t){
+  var d = new Date(iso); if (!(d > 0)) return null;
+  var h = Math.max(0, (t - d) / 3600000);
+  return h < 1 ? 'under 1H' : h < 48 ? Math.round(h) + 'H' : Math.round(h / 24) + 'D';
+}
+function bankView(m, t){
+  var st = m.bank_state || 'unknown', age = m.bank_synced_at ? bankAge(m.bank_synced_at, t) : null;
+  if (st === 'manual') return {ok: true, sub: null};
+  if (st === 'fresh') return {ok: true, sub: age ? 'Bank synced ' + age + ' ago' : null};
+  if (st === 'stale') return {ok: false, tag: 'STALE', cls: 'watch', sub: age ? 'Last bank sync ' + age + ' ago' : 'Bank is behind'};
+  if (st === 'error') return {ok: false, tag: 'SYNC ERROR', cls: 'short', sub: 'Last bank sync failed' + (age ? ' \u00b7 last good ' + age + ' ago' : '')};
+  return {ok: false, tag: 'UNKNOWN', cls: 'watch', sub: 'Bank sync time unknown'};
+}
+function moneyBody(m, t){
+  var asOf = new Date(m.as_of), stale = !(asOf > 0) || (t - asOf) > MONEY_STALE_MIN * 60000;
+  var bank = bankView(m, t);
+  var row = function(label, sub, right, warn){
+    return '<div class="row"><span class="what"><span class="main">' + esc(label) + '</span>' +
+      (sub ? '<span class="sub' + (warn ? ' warn' : '') + '">' + esc(sub) + '</span>' : '') + '</span>' + right + '</div>';
+  };
+  var status = MONEY_STATUS[m.status] ? m.status : 'watch';
+  var availSub = stale ? 'Last updated ' + (asOf > 0 ? hmText(asOf) : 'unknown') : !bank.ok ? 'Not current \u2014 see Data' : bank.sub || 'As of ' + hmText(asOf);
+  var dataRow = bank.ok ? '' : row('Data', bank.sub, '<span class="sticker stick money ' + bank.cls + '"><b>' + esc(bank.tag) + '</b></span>', true);
+  return row('Available', availSub, '<span class="amt">' + usd(m.available) + '</span>', stale || !bank.ok) + dataRow +
+    row('Today', 'Spent so far', '<span class="amt out">' + usd(m.spent_today, true) + '</span>') +
+    row('Next 7 days', 'Scheduled bills', '<span class="amt out">' + usd(m.upcoming_7d, true) + '</span>') +
+    row('Status', MONEY_STATUS[status], '<span class="sticker stick money ' + status + '"><b>' + esc(status.toUpperCase()) + '</b></span>', status !== 'clear');
+}
+function renderBody(s, t){
+  if (s.kind === 'money') return moneyBody(s.money, t);
+  var MAX = (s.kind === 'steps' || s.kind === 'list') ? 5 : 4, html = '', rows = [];
+  if (s.kind === 'steps') {
+    rows = s.items.map(function(x, i){ return '<div class="row"><span class="num">' + (i + 1) + '</span><span class="what"><span class="main">' + esc(x) + '</span></span></div>'; });
+  } else if (s.kind === 'list') {
+    rows = s.items.map(function(x){ return '<div class="row"><span class="mk box"></span><span class="what"><span class="main">' + esc(x) + '</span></span></div>'; });
+  } else if (s.kind === 'events') {
+    rows = s.items.map(eventRow);
+  } else if (s.kind === 'tasks') {
+    rows = s.items.map(function(k){ return taskRow(k, t); });
+  } else if (s.kind === 'tomorrow') {
+    rows = s.items.map(eventRow).concat((s.tasks || []).map(function(k){ return taskRow(k, t); }));
+  } else if (s.kind === 'burners') {
+    var today = addDays(t, 0);
+    rows = s.items.map(function(b){
+      var right = '';
+      if (b.deadline) {
+        var days = Math.round((parseDay(b.deadline) - today) / 86400000);
+        right = days >= 0 ? '<span class="sticker stick"><b>' + days + '</b>' + (days === 1 ? 'day' : 'days') + ' to ' + esc(monthDay(parseDay(b.deadline))) + '</span>'
+                          : '<span class="sticker stick"><b>' + (-days) + '</b>days over</span>';
+      }
+      var sub = esc(b.vault ? b.vault + ': ' : '') + (b.next ? esc(b.next) : 'no next action set in Notion');
+      return '<div class="row"><span class="mk burn"></span><span class="what"><span class="main">' + esc(b.title) + '</span><span class="sub' + (b.next ? '' : ' warn') + '">' + sub + '</span></span>' + right + '</div>';
+    });
+  }
+  if (!rows.length) return '<p class="empty">' + esc(s.empty || '') + '</p>';
+  html = rows.slice(0, MAX).join('');
+  if (rows.length > MAX) html += '<div class="more">' + (rows.length - MAX) + ' more in ' + esc(s.src) + '</div>';
+  return html;
+}
+
+function showSegment(step){
+  var t = now();
+  segs = buildSegments(t);
+  if (!segs.length) return;
+  var at = -1;
+  for (var i = 0; i < segs.length; i++) if (segs[i].key === segKey) at = i;
+  segIdx = at < 0 ? 0 : (at + step + segs.length) % segs.length;
+  var s = segs[segIdx], el = $('seg');
+  segKey = s.key;
+  el.classList.add('out');
+  setTimeout(function(){
+    $('segTitle').textContent = s.title;
+    $('segSrc').textContent = s.src;
+    $('segBody').innerHTML = renderBody(s, t);
+    $('rotor').innerHTML = segs.map(function(_, j){ return '<span class="' + (j === segIdx ? 'on' : '') + '"></span>'; }).join('');
+    el.classList.remove('out');
+  }, step === 0 ? 0 : 450);
+}
+
+/* ================= right now ================= */
+function renderNow(){
+  var t = now(), today = eventsOn(t).filter(function(e){ return !e.allDay; });
+  var cur = null, next = null;
+  today.forEach(function(e){ if (e.s <= t && e.e > t) cur = e; });
+  for (var i = 0; i < today.length; i++) if (today[i].s > t) { next = today[i]; break; }
+  var nextHtml = next ? '<b>Next</b><em>' + hmHtml(next.s) + '</em>' + esc(next.title) : '';
+  if (cur) {
+    var p = Math.min(1, Math.max(0, (t - cur.s) / (cur.e - cur.s)));
+    $('onLabel').textContent = 'Right now';
+    $('onRange').innerHTML = hmHtml(cur.s) + ' to ' + hmHtml(cur.e);
+    $('onTitle').textContent = cur.title;
+    $('onBarRow').style.visibility = 'visible';
+    $('onBar').style.width = (p * 100).toFixed(1) + '%';
+    $('onLeft').textContent = dur(cur.e - t) + ' left';
+    $('onNote').textContent = cur.note;
+    $('onNext').innerHTML = nextHtml;
+  } else if (next) {
+    $('onLabel').textContent = 'Open time';
+    $('onRange').innerHTML = 'until ' + hmHtml(next.s);
+    $('onTitle').textContent = 'Free for ' + dur(next.s - t);
+    $('onBarRow').style.visibility = 'hidden';
+    $('onNote').textContent = '';
+    $('onNext').innerHTML = nextHtml;
+  } else {
+    var tm = eventsOn(addDays(t, 1)).filter(function(e){ return !e.allDay; })[0];
+    $('onLabel').textContent = 'Open time';
+    $('onRange').textContent = '';
+    $('onTitle').textContent = 'Nothing else on the calendar today';
+    $('onBarRow').style.visibility = 'hidden';
+    $('onNote').textContent = '';
+    $('onNext').innerHTML = tm ? '<b>Tomorrow</b><em>' + hmHtml(tm.s) + '</em>' + esc(tm.title) : '';
+  }
+}
+
+/* ================= clock, header, look ================= */
+function renderClock(){
+  var t = now(), h = t.getHours();
+  $('time').textContent = hm(t);
+  $('timeS').textContent = hm(t);
+  $('ampm').textContent = h < 12 ? 'AM' : 'PM';
+  var sun = sunToday(t), line = '';
+  if (sun) {
+    if (t < sun.rise) line = 'Sunrise ' + hmText(sun.rise);
+    else if (t < sun.set) line = 'Sunset ' + hmText(sun.set);
+    else { var s2 = sunTimes(addDays(t, 1), ((DATA && DATA.location) || DEFAULT_LOC).lat, ((DATA && DATA.location) || DEFAULT_LOC).lon); line = s2 ? 'Sunrise ' + hmText(s2.rise) : ''; }
+  }
+  $('sun').textContent = line;
+  $('sun').hidden = !line;
+  var name = (DATA && DATA.name) || '';
+  var part = h >= 5 && h < 12 ? 'Morning' : h >= 12 && h < 17 ? 'Afternoon' : h >= 17 && h < 23 ? 'Evening' : 'Up late';
+  $('hello').textContent = name ? part + ', ' + name : (part === 'Up late' ? 'Up late' : 'Good ' + part.toLowerCase());
+  $('date').textContent = t.toLocaleDateString('en-US', {weekday: 'long', month: 'long', day: 'numeric'});
+  document.body.classList.toggle('dim', isDim(t));
+}
+function applyLook(){
+  var t = now(), r = document.documentElement;
+  r.setAttribute('data-pal', currentPalette(t));
+  r.setAttribute('data-sky', currentSky(t));
+  r.setAttribute('data-mode', currentMode());
+  document.body.classList.toggle('still', look().motion === false);
+}
+function renderHeader(){
+  var w = (DATA && DATA.weather) || null, html = '';
+  if (w && w.temp != null) {
+    html = '<b>' + esc(Math.round(w.temp)) + '°</b> ' + esc(w.sky || '');
+    var hl = [];
+    if (w.high != null) hl.push('high ' + Math.round(w.high));
+    if (w.low != null) hl.push('low ' + Math.round(w.low));
+    if (hl.length) html += ', ' + hl.join(', ');
+  } else if (w && w.periods && w.periods[0]) {
+    html = esc(w.periods[0].text);
+  }
+  if (w && w.alerts && w.alerts.length) html = '<span class="alert">' + esc(w.alerts[0].event || w.alerts[0].headline) + '</span>  ' + html;
+  if (SOURCE === 'sample') html += '<span class="sticker chip">Sample data</span>';
+  $('wx').innerHTML = html;
+}
+function renderMode(){
+  var key = currentMode(), m = modeInfo(key);
+  $('mode').textContent = m.name;
+  var t = now(), h = t.getHours(), dir = m.directive;
+  if (h >= 21 || h < 4) {
+    var first = eventsOn(addDays(t, h < 4 ? 0 : 1)).filter(function(e){ return !e.allDay; })[0];
+    dir = first ? 'Wind down. Tomorrow starts at ' + hmText(first.s) + '.' : 'Wind down. Nothing on the calendar tomorrow.';
+    if (h < 4 && first) dir = 'Get some sleep. The day starts at ' + hmText(first.s) + '.';
+  }
+  $('directive').textContent = dir;
+}
+
+/* ================= info line ================= */
+function cap(s){ return s.charAt(0).toUpperCase() + s.slice(1); }
+function infoItems(){
+  var t = now(), items = [], D = DATA || {};
+  var H = D.health || {};
+  Object.keys(H).forEach(function(k){
+    var x = H[k];
+    if (x && x.ok === false) items.push({warn: true, text: cap(k) + ' isn\'t updating' + (x.since ? ' since ' + hmText(new Date(x.since)) : '') + '. Check ' + (k === 'money' ? 'the ledger service' : 'wdbs-today-feed') + ' on the app host.'});
+  });
+  if (SOURCE === 'live' && D.generated && (t - new Date(D.generated)) > STALE_MIN * 60000)
+    items.push({warn: true, text: 'Feed last updated ' + hmText(new Date(D.generated)) + '. Check wdbs-today-feed on the app host.'});
+  if (fetchFailing && lastGoodAt) items.push({warn: true, text: 'Can\'t reach the app host. Showing what loaded at ' + hmText(lastGoodAt) + '.'});
+  if (SOURCE === 'sample' && KIOSK) items.push({warn: true, text: 'No feed yet. Start wdbs-today-feed on the app host.'});
+  if (music.broken) items.push({warn: true, text: 'The music files won\'t play here. Run prep-music.sh on the app host to convert them.'});
+  var w = D.weather || {};
+  (w.alerts || []).forEach(function(a){ items.push({warn: true, text: a.headline || a.event}); });
+  eventsOn(t).filter(function(e){ return e.allDay; }).forEach(function(e){ items.push({text: 'All day today: ' + e.title}); });
+  (w.periods || []).slice(0, 2).forEach(function(p){ items.push({text: p.name + ': ' + p.text}); });
+  if (currentMode() !== 'reset') {
+    (D.burners || []).forEach(function(b){
+      if (!b.deadline) return;
+      var days = Math.round((parseDay(b.deadline) - addDays(t, 0)) / 86400000);
+      if (days >= 0) items.push({text: b.title + ': ' + days + (days === 1 ? ' day' : ' days') + ' to ' + monthDay(parseDay(b.deadline))});
+    });
+    var tb = taskBuckets(t), carried = tb.today.filter(function(k){ return k.carried; }).length;
+    if (tb.today.length) items.push({text: tb.today.length + (tb.today.length === 1 ? ' task' : ' tasks') + ' on deck today' + (carried ? ', ' + carried + ' carried over' : '')});
+  }
+  (D.ticker || []).forEach(function(s){ if (s) items.push({text: String(s)}); });
+  if (D.mode && D.mode.reason === 'default' && !pv.mode)
+    items.push({text: 'Switch the day: add an all-day Field day or Reset day event in Google Calendar'});
+  else if (D.mode && D.mode.reason && D.mode.reason !== 'default' && !pv.mode)
+    items.push({text: 'Mode set by ' + D.mode.reason});
+  return items;
+}
+function flipInfo(){
+  var items = infoItems(), win = $('infoWin');
+  var old = win.querySelector('.info-item:not(.hide)');
+  if (!items.length) { if (old) old.classList.add('hide'); return; }
+  infoIdx = (infoIdx + 1) % items.length;
+  var it = items[infoIdx], el = document.createElement('div');
+  el.className = 'info-item hide' + (it.warn ? ' warn' : '');
+  el.textContent = it.text;
+  win.appendChild(el);
+  if (old) old.classList.add('hide');
+  setTimeout(function(){ el.classList.remove('hide'); }, old ? 350 : 0);
+  if (old) setTimeout(function(){ if (old.parentNode) old.parentNode.removeChild(old); }, 700);
+}
+
+/* ================= music bed ================= */
+var music = {audio: null, queue: [], cur: null, errors: 0, blocked: false, broken: false, sig: ''};
+function tracks(){ return (DATA && DATA.music && DATA.music.tracks) || []; }
+function targetVolume(){
+  var m = (DATA && DATA.music) || {}, v = isDim(now()) ? m.night_volume : m.volume;
+  return Math.max(0, Math.min(1, v == null ? 0.6 : v));
+}
+function shuffle(a){ a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var x = a[i]; a[i] = a[j]; a[j] = x; } return a; }
+function fadeTo(v, ms){
+  var a = music.audio; if (!a) return;
+  clearInterval(music.fader);
+  var start = a.volume, steps = Math.max(1, Math.round(ms / 100)), i = 0;
+  music.fader = setInterval(function(){ i++; a.volume = Math.max(0, Math.min(1, start + (v - start) * i / steps)); if (i >= steps) clearInterval(music.fader); }, 100);
+}
+function nextTrack(){
+  var list = tracks();
+  if (!list.length) { if (music.audio) music.audio.pause(); $('tune').hidden = true; return; }
+  if (!music.queue.length) music.queue = shuffle(list);
+  music.cur = music.queue.shift();
+  var a = music.audio;
+  a.src = music.cur.src;
+  a.volume = 0;
+  var p = a.play();
+  if (p && p.then) p.then(function(){
+    music.blocked = false; music.errors = 0;
+    $('pvMusic').hidden = true;
+    fadeTo(targetVolume(), 3000);
+    $('tuneTitle').textContent = music.cur.title || '';
+    $('tune').hidden = false;
+  }).catch(function(err){
+    if (err && err.name === 'NotAllowedError') { music.blocked = true; $('pvMusic').hidden = KIOSK; }
+  });
+}
+function startMusic(){
+  var list = tracks(), sig = list.map(function(x){ return x.src; }).join('|');
+  if (!music.audio) {
+    music.audio = new Audio();
+    music.audio.preload = 'auto';
+    music.audio.addEventListener('ended', nextTrack);
+    music.audio.addEventListener('playing', vizStart);
+    music.audio.addEventListener('error', function(){
+      music.errors++;
+      if (music.errors >= Math.max(1, tracks().length)) { music.broken = true; $('tune').hidden = true; return; }
+      setTimeout(nextTrack, 1500);
+    });
+  }
+  if (sig !== music.sig) { music.sig = sig; music.queue = []; music.errors = 0; music.broken = false; }
+  if (!list.length) { music.audio.pause(); $('tune').hidden = true; $('pvMusic').hidden = true; return; }
+  if (music.audio.paused && !music.blocked && !music.broken) nextTrack();
+  if (music.blocked && !KIOSK) $('pvMusic').hidden = false;
+}
+
+/* ================= music-reactive motion =================
+   One AnalyserNode on the music bed, read ~30 times a second. Four bands drive transforms
+   on small layers only (header speed lines, flames, halo kick, the eq by the track name),
+   so the TV host's software renderer never repaints the background. The audio is routed
+   through Web Audio only once the context is confirmed running, so a suspended context
+   can never mute the music. Off with look.motion=false / reduced motion; half strength
+   during the dim hours. */
+var viz = {an: null, data: null, tries: 0, lv: [0, 0, 0, 0], mean: null, kick: 0, lastKick: 0, on: false};
+if (qs.has('debug')) { window.__viz = viz; window.__music = music; }
+function vizAllowed(){
+  return !document.body.classList.contains('still') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function vizConnect(done){
+  if (viz.an) return done();
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC || viz.tries >= 3 || !music.audio) return;
+  viz.tries++;
+  var ctx; try { ctx = new AC(); } catch (e) { return; }
+  var go = function(){
+    if (ctx.state !== 'running') { if (ctx.close) ctx.close(); return; }
+    try {
+      var src = ctx.createMediaElementSource(music.audio), an = ctx.createAnalyser();
+      an.fftSize = 512; an.smoothingTimeConstant = 0.55;
+      src.connect(an); an.connect(ctx.destination);
+      viz.an = an; viz.data = new Uint8Array(an.frequencyBinCount);
+      done();
+    } catch (e) { if (ctx.close) ctx.close(); }
+  };
+  if (ctx.state === 'running' || !ctx.resume) go(); else ctx.resume().then(go, function(){ if (ctx.close) ctx.close(); });
+}
+function vizStart(){
+  if (viz.on || !vizAllowed()) return;
+  vizConnect(function(){ viz.on = true; });
+}
+function vizRest(){
+  $('flames').style.transform = '';
+  document.querySelector('.halo svg').style.transform = '';
+  Array.prototype.forEach.call(document.querySelectorAll('.speed i'), function(el){ el.style.transform = ''; });
+  Array.prototype.forEach.call(document.querySelectorAll('#eq i'), function(el){ el.style.transform = ''; });
+  viz.lv = [0, 0, 0, 0]; viz.kick = 0; viz.mean = null;
+}
+function band(d, a, b){ var s = 0; for (var i = a; i < b; i++) s += d[i]; return s / ((b - a) * 255); }
+function vizCompute(t){
+  if (!music.audio || music.audio.paused || document.hidden || !vizAllowed()) { viz.on = false; vizRest(); return; }
+  var d = viz.data; viz.an.getByteFrequencyData(d);
+  // ~94 Hz bins at 48 kHz: kick 0-190 Hz, bass 90-280, low-mid 280-750, mid 0.75-2.8k, high 2.8-11k.
+  // Byte data is log-scaled and loud masters sit near the top, so each band is read against its own
+  // running average: the average rests at 0.35, hits above it push toward 1. Adapts to every track.
+  var raw = [band(d, 1, 3), band(d, 3, 8), band(d, 8, 30), band(d, 30, 120)], kickRaw = band(d, 0, 2);
+  if (!viz.mean) viz.mean = raw.concat([kickRaw]);
+  var span = [0.10, 0.10, 0.09, 0.12];
+  viz.raw = raw;
+  for (var i = 0; i < 4; i++) {
+    viz.mean[i] += (raw[i] - viz.mean[i]) * 0.04;
+    var v = Math.min(1, Math.max(0, 0.35 + (raw[i] - viz.mean[i]) / span[i]));
+    viz.lv[i] += (v - viz.lv[i]) * (v > viz.lv[i] ? 0.65 : 0.16);   // fast attack, slow release
+  }
+  var rise = kickRaw - viz.mean[4];
+  viz.mean[4] += (kickRaw - viz.mean[4]) * 0.05;
+  if (rise > 0.045 && t - viz.lastKick > 220) { viz.kick = Math.min(1, rise / 0.1); viz.lastKick = t; }
+  else viz.kick *= 0.8;
+}
+function vizK(){ return isDim(now()) ? 0.5 : 1; }
+function vizFlames(){
+  var k = vizK(), b = viz.lv[0] + (fullMotion() ? 0 : 0.35 * viz.kick);   // lite: kicks flare the flames instead of the halo
+  $('flames').style.transform = 'scale(' + (1 + 0.5 * Math.min(1, b) * k).toFixed(3) + ',' + (1 + 0.14 * Math.min(1, b) * k).toFixed(3) + ')';
+}
+function vizKick(){ document.querySelector('.halo svg').style.transform = 'scale(' + (1 + 0.04 * viz.kick * vizK()).toFixed(4) + ')'; }
+function vizHeader(){
+  var k = vizK(), sp = document.querySelectorAll('.speed i'), pick = [0, 2, 3];
+  for (var j = 0; j < sp.length; j++) sp[j].style.transform = 'scaleX(' + (0.3 + 0.7 * viz.lv[pick[j]] * k + 0.3 * (1 - k)).toFixed(3) + ')';
+}
+function vizEq(){
+  var eq = document.querySelectorAll('#eq i');
+  for (var q = 0; q < eq.length; q++) eq[q].style.transform = 'scaleY(' + (0.15 + 0.85 * viz.lv[q]).toFixed(3) + ')';
+}
+document.addEventListener('visibilitychange', function(){ if (!document.hidden && music.audio && !music.audio.paused) vizStart(); });
+
+/* ================= feed ================= */
+function renderAll(resetSeg){
+  applyLook(); renderClock(); renderMode(); renderHeader(); renderNow();
+  if (resetSeg) showSegment(0);
+}
+function load(){
+  var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 8000) : null;
+  return fetch(FEED_URL + '?_=' + Date.now(), {cache: 'no-store', signal: ctrl ? ctrl.signal : undefined})
+    .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function(d){
+      if (timer) clearTimeout(timer);
+      if (!d || !d.version) throw new Error('bad feed');
+      fetchFailing = false; lastGoodAt = new Date();
+      var first = SOURCE !== 'live';
+      if (first) segKey = '';
+      DATA = d; SOURCE = 'live';
+      document.body.classList.remove('preview');
+      renderAll(first);
+      startMusic();
+    })
+    .catch(function(){
+      if (timer) clearTimeout(timer);
+      if (SOURCE === 'live') { fetchFailing = true; return; }
+      if (SOURCE !== 'sample') {
+        DATA = sampleData(); SOURCE = 'sample'; segKey = '';
+        document.body.classList.toggle('preview', !KIOSK);
+        renderAll(true);
+      }
+    });
+}
+
+/* ================= stage fit ================= */
+function fit(){
+  var vw = document.documentElement.clientWidth || innerWidth;
+  var vh = KIOSK ? innerHeight : Infinity;
+  var s = Math.min(vw / 1920, vh / 1080);
+  if (!KIOSK) s = Math.min(s, 1);
+  $('viewport').style.height = Math.round(1080 * s) + 'px';
+  $('stage').style.transform = 'translate(' + Math.round((vw - 1920 * s) / 2) + 'px,0) scale(' + s + ')';
+}
+
+/* ================= overspray (painted once) ================= */
+function paintSpray(){
+  var seed = 1987, g = $('spray'), NS = 'http://www.w3.org/2000/svg', frag = document.createDocumentFragment();
+  function rnd(){ seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+  function dot(x, y, r, o){ var c = document.createElementNS(NS, 'circle'); c.setAttribute('cx', x.toFixed(1)); c.setAttribute('cy', y.toFixed(1)); c.setAttribute('r', r.toFixed(1)); c.setAttribute('opacity', o.toFixed(2)); frag.appendChild(c); }
+  // mist around the clock, heavier on the side the force lines run toward
+  for (var i = 0; i < 260; i++) {
+    var a = (rnd() * 2 - 1) * Math.PI * (rnd() < .7 ? .45 : 1), rr = 262 + Math.pow(rnd(), 1.8) * 110;
+    dot(400 + Math.cos(a) * rr, 520 + Math.sin(a) * rr, .8 + rnd() * 2.6, .25 + rnd() * .6);
+  }
+  // splatter near the tag
+  for (var j = 0; j < 90; j++) dot(110 + rnd() * 560, 800 + rnd() * 40 - (rnd() < .5 ? 0 : 20), .8 + rnd() * 3.2, .3 + rnd() * .6);
+  g.appendChild(frag);
+}
+
+/* ================= seconds bead, synced to the clock ================= */
+function syncSeconds(){
+  if (!motionOn()) beadAt(now().getSeconds() * 6);
+}
+
+/* ================= one motion clock =================
+   The TV host draws web channels in software, one core, and each frame re-rasters the single
+   rectangle that covers everything that changed (about 25 ms per 500x500 px). So motion is
+   staggered: every animation frame touches one small spot only (flames, header EQ, track EQ,
+   satellite), the seconds bead ticks once a second like a real second hand, and the halo
+   turns in small steps. look.full_motion (for a GPU-composited player) adds the swaying force
+   fan and the halo beat kick and moves everything together at display rate (60 fps).
+   ?off=rays,halo,orbit,sec,viz,grain,flames and ?fps=N switch parts off for profiling. */
+var OFF = (qs.get('off') || '').split(','), EVERY = +qs.get('every') || 1, motion = {f: 0, skip: 0, last: 0, rest: true, sec: -1, halo: 0};
+function isOff(k){ return OFF.indexOf(k) >= 0 || OFF.indexOf('all') >= 0; }
+if (isOff('grain')) $('grain').style.display = 'none';
+function motionOn(){
+  return !document.body.classList.contains('still') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function fullMotion(){ return look().full_motion === true || qs.has('full'); }
+function beadAt(deg){
+  // move the 18 px bead itself around the rim (a rotated 500 px layer would repaint the whole dial)
+  var r = deg * Math.PI / 180, R = 238;
+  $('secBead').style.transform = 'translate(' + (R * Math.sin(r)).toFixed(1) + 'px,' + (R * (1 - Math.cos(r))).toFixed(1) + 'px)';
+}
+function orbitAt(ms, period){
+  var orb = (ms % (period || 60000)) / (period || 60000) * 360;
+  document.querySelector('.orbit-spin').style.transform = 'rotate(' + orb.toFixed(2) + 'deg)';
+  document.querySelector('.orbit-counter').style.transform = 'rotate(' + (-orb).toFixed(2) + 'deg)';
+}
+function motionRest(){
+  motion.rest = true; motion.sec = -1;
+  ['rays', 'secBead'].forEach(function(id){ $(id).style.transform = ''; });
+  ['.halo', '.orbit-spin', '.orbit-counter'].forEach(function(q){ document.querySelector(q).style.transform = ''; });
+  syncSeconds();
+}
+function motionTick(t){
+  requestAnimationFrame(motionTick);
+  if (!motionOn()) { if (!motion.rest) motionRest(); return; }
+  motion.rest = false;
+  var ms = Date.now(), c = now(), full = fullMotion(), musicOn = viz.on && !isOff('viz');
+  if (full) {
+    if (t - motion.last < 1000 / (+qs.get('fps') || 60) - 4) return;
+    motion.last = t;
+    if (!isOff('sec')) beadAt((c.getSeconds() * 1000 + c.getMilliseconds()) * 0.006);
+    if (!isOff('halo')) document.querySelector('.halo').style.transform = 'rotate(' + (-(ms % 140000) / 140000 * 360).toFixed(2) + 'deg)';
+    if (!isOff('orbit')) orbitAt(ms, 28000);
+    if (!isOff('rays')) $('rays').style.transform = 'rotate(' + (2.6 * Math.sin(ms / 16000 * 2 * Math.PI)).toFixed(3) + 'deg)';
+    if (musicOn) { vizCompute(t); vizFlames(); vizHeader(); vizEq(); vizKick(); }
+    return;
+  }
+  // lite: music first. The ambient pieces (bead, halo, satellite) tick together once a second
+  // like a clock; every other update goes to one music spot at a time (flames, header EQ, track EQ).
+  if (motion.skip++ % EVERY) return;
+  if (c.getSeconds() !== motion.sec) {
+    motion.sec = c.getSeconds();
+    if (!isOff('sec')) beadAt(motion.sec * 6);
+    if (!isOff('orbit')) orbitAt(c.getSeconds() * 1000, 60000);          // satellite laps once a minute, one step a second
+    if (!isOff('halo')) document.querySelector('.halo').style.transform = 'rotate(' + (-(ms % 140000) / 140000 * 360).toFixed(2) + 'deg)';
+    return;
+  }
+  if (!musicOn) return;
+  var slot = motion.f++ % 3;
+  if (slot === 0) { vizCompute(t); vizFlames(); }
+  else if (slot === 1) vizHeader();
+  else vizEq();
+}
+requestAnimationFrame(motionTick);
+
+/* ================= input (remote keys, preview) ================= */
+document.addEventListener('keydown', function(e){
+  if (e.key === 'PageDown' || e.key === 'ArrowRight') { showSegment(1); resetRotation(); }
+  else if (e.key === 'PageUp' || e.key === 'ArrowLeft') { showSegment(-1); resetRotation(); }
+  else if (e.key === 'Enter' && KIOSK) {
+    var cur = currentMode(), nxt = MODES[(MODES.indexOf(cur) + 1) % MODES.length];
+    store('wdbs-today-mode', nxt === ((DATA && DATA.mode && DATA.mode.key) || 'build') ? null : dateKey(now()) + '|' + nxt);
+    applyLook(); renderMode(); segKey = ''; showSegment(0);
+  }
+});
+function wire(groupId, attr, fn){
+  var btns = document.querySelectorAll('#' + groupId + ' button');
+  Array.prototype.forEach.call(btns, function(b){
+    b.addEventListener('click', function(){
+      var v = b.getAttribute(attr) || '';
+      Array.prototype.forEach.call(btns, function(x){ x.setAttribute('aria-pressed', String(x === b)); });
+      fn(v);
+    });
+  });
+}
+function mark(groupId, attr, val){
+  Array.prototype.forEach.call(document.querySelectorAll('#' + groupId + ' button'), function(b){ b.setAttribute('aria-pressed', String((b.getAttribute(attr) || '') === val)); });
+}
+wire('pvSky', 'data-sky', function(v){ pv.sky = v; applyLook(); });
+wire('pvMode', 'data-mode', function(v){ pv.mode = v; applyLook(); renderMode(); segKey = ''; showSegment(0); });
+wire('pvTime', 'data-at', function(v){ setAt(v); });
+$('pvPrev').addEventListener('click', function(){ showSegment(-1); resetRotation(); });
+$('pvNext').addEventListener('click', function(){ showSegment(1); resetRotation(); });
+$('pvMusic').addEventListener('click', function(){ music.blocked = false; nextTrack(); });
+function setAt(v){
+  if (!v) simOffset = 0;
+  else { var p = v.split(':'), x = new Date(); x.setHours(+p[0], +p[1], 0, 0); simOffset = x - Date.now(); }
+  segKey = ''; renderAll(true); syncSeconds(); infoIdx = -1; flipInfo();
+}
+
+/* ================= timers ================= */
+var rotTimer = null;
+function resetRotation(){ clearInterval(rotTimer); rotTimer = setInterval(function(){ showSegment(1); }, SEGMENT_MS); }
+var lastMinute = -1;
+setInterval(function(){
+  var t = now();
+  if (t.getMinutes() !== lastMinute) {
+    lastMinute = t.getMinutes();
+    applyLook(); renderClock(); renderNow(); renderMode(); syncSeconds();
+    if (music.audio && !music.audio.paused) fadeTo(targetVolume(), 4000);
+    if (KIOSK && SOURCE === 'live' && t.getHours() === RELOAD_AT[0] && t.getMinutes() === RELOAD_AT[1]) location.reload();
+  }
+}, 1000);
+
+if (qs.get('at')) simOffset = (function(v){ var p = v.split(':'), x = new Date(); x.setHours(+p[0], +p[1], 0, 0); return x - Date.now(); })(qs.get('at'));
+mark('pvSky', 'data-sky', pv.sky);
+mark('pvMode', 'data-mode', pv.mode);
+mark('pvTime', 'data-at', qs.get('at') || '');
+if (KIOSK) document.body.classList.add('kiosk');
+addEventListener('resize', fit);
+fit();
+paintSpray();
+applyLook(); renderClock(); syncSeconds();
+load().then(function(){ flipInfo(); });
+setInterval(load, FEED_POLL_MS);
+setInterval(flipInfo, INFO_MS);
+resetRotation();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>

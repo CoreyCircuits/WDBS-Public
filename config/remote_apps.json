@@ -1,0 +1,52 @@
+{
+  "_doc": "WDBS remote applications (docs/CHANNEL-ROUTER.md). A channel points at one by key: station conf \"wdbs_app\". Read on every tune, so edits need no player restart. Hosts are placeholders: set 'host' and 'key_relay' for your own app host.",
+  "remote_apps": {
+    "stremio": {
+      "name": "WDBS Stream (Stremio-powered)",
+      "provider": "sunshine",
+      "host": "app-host.example.invalid",
+      "application": "WDBS Stream",
+      "persistent": true,
+      "resolution": "1920x1080",
+      "fps": 60,
+      "bitrate_kbps": 15000,
+      "codec": "H.264",
+      "connect_timeout_s": 25,
+      "key_relay": "http://app-host.example.invalid:48005/key",
+      "keys": {}
+    },
+    "stremio-desktop": {
+      "name": "Stremio desktop (fallback UI)",
+      "provider": "sunshine",
+      "host": "app-host.example.invalid",
+      "application": "WDBS Stremio",
+      "persistent": true,
+      "resolution": "1920x1080",
+      "fps": 60,
+      "bitrate_kbps": 15000,
+      "codec": "H.264",
+      "connect_timeout_s": 25,
+      "key_relay": "http://app-host.example.invalid:48005/key",
+      "keys": {
+        "ArrowLeft": "Shift+Tab",
+        "ArrowRight": "Tab"
+      }
+    },
+    "testpattern": {
+      "name": "WDBS test pattern (routing test, no host needed)",
+      "provider": "command",
+      "command": [
+        "mpv",
+        "--fs",
+        "--no-audio",
+        "--no-terminal",
+        "--input-test",
+        "--force-window",
+        "--title=WDBS remote-app test",
+        "av://lavfi:testsrc2=s=1280x720:r=30"
+      ],
+      "ready_after_s": 1.5,
+      "connect_timeout_s": 10
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "station_conf": {
+    "network_name": "WDBS TODAY",
+    "channel_number": 3,
+    "network_type": "web",
+    "refresh_interval": 0,
+    "web_url": "http://app-host.example.invalid:8742/?kiosk"
+  }
+}

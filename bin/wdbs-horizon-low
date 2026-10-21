@@ -1,0 +1,12 @@
+#!/bin/sh
+# wdbs-horizon-low CHANNEL HOURS - exit 0 when the channel's schedule ends within HOURS (or can't be read), else 1.
+# Used as ExecCondition by wdbs-overnight-retry: rerun the overnight job only when the 04:30 run failed to extend it.
+"$(dirname "$(readlink -f "$0")")/wdbs" --json status 2>/dev/null | python3 -c '
+import json, sys
+ch, need = int(sys.argv[1]), float(sys.argv[2])
+try:
+    h = [c.get("horizon_hours") for c in json.load(sys.stdin)["channels"] if c["channel"] == ch]
+except Exception:
+    sys.exit(0)
+sys.exit(0 if not h or h[0] is None or h[0] < need else 1)
+' "$1" "$2"

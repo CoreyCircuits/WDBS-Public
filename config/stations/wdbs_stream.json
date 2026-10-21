@@ -1,0 +1,10 @@
+{
+  "station_conf": {
+    "network_name": "WDBS STREAM",
+    "channel_number": 9,
+    "network_type": "executable",
+    "executable_command": "sleep infinity",
+    "wdbs_service": "remote_app",
+    "wdbs_app": "stremio"
+  }
+}

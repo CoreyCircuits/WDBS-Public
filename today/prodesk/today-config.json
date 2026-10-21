@@ -1,0 +1,123 @@
+{
+  "timezone": "America/New_York",
+  "name": "Example",
+  "look": {
+    "palette": "drive-in",
+    "sky": "auto",
+    "motion": true,
+    "dim_from": 23,
+    "dim_to": 6,
+    "full_motion": true
+  },
+  "music": {
+    "folder": "~/wdbs-today/www/music",
+    "volume": 0.7,
+    "night_volume": 0.35
+  },
+  "calendar": {
+    "days": 2,
+    "show_notes": true,
+    "note_max_chars": 120,
+    "skip_titles": []
+  },
+  "notion": {
+    "api_version": "2022-06-28",
+    "tasks_db": "00000000000040008000000000000011",
+    "projects_db": "00000000000040008000000000000012",
+    "tasks": {
+      "title": "Name",
+      "done": "Done",
+      "scheduled": "Scheduled For",
+      "due": "Date",
+      "priority": "Priority",
+      "area": "Area",
+      "minutes": "Estimated Minutes"
+    },
+    "projects": {
+      "title": "Name",
+      "lane": "Lane",
+      "lane_value": "Burner",
+      "next": "Next Action",
+      "vault": "Vault",
+      "deadline": "Deadline"
+    }
+  },
+  "weather": {
+    "lat": 40.0,
+    "lon": -75.0,
+    "user_agent": "WDBS-Today/1.0 (example dashboard; contact: admin@example.invalid)",
+    "cache_minutes": 10
+  },
+  "default_mode": "build",
+  "weekday_modes": {},
+  "modes": {
+    "build": {
+      "name": "Build day",
+      "directive": "Deep blocks first. The rest fits around them.",
+      "all_day_titles": [
+        "build day",
+        "mode: build"
+      ],
+      "timed_keywords": []
+    },
+    "field": {
+      "name": "Field day",
+      "directive": "Charge it, pack it, record everything.",
+      "all_day_titles": [
+        "field day",
+        "mode: field"
+      ],
+      "timed_keywords": [
+        "field work",
+        "filming",
+        "shoot",
+        "b-roll",
+        "site visit"
+      ]
+    },
+    "reset": {
+      "name": "Reset day",
+      "directive": "Bare minimum counts today.",
+      "all_day_titles": [
+        "reset day",
+        "rest day",
+        "sick day",
+        "day off",
+        "mode: reset"
+      ],
+      "timed_keywords": []
+    }
+  },
+  "routines": {
+    "morning": [
+      "Morning item one",
+      "Morning item two",
+      "Breakfast",
+      "Review the day"
+    ],
+    "night": [
+      "Night item one",
+      "Night item two",
+      "Stretch",
+      "Reflect on the day"
+    ]
+  },
+  "lists": {
+    "field": [
+      "Batteries charged",
+      "Storage cleared",
+      "Recorder packed",
+      "Laptop charged",
+      "Questions prepared"
+    ],
+    "reset": [
+      "Eat a real meal",
+      "Drink water",
+      "Shower",
+      "One small thing off the list",
+      "Lights out on time"
+    ]
+  },
+  "ticker": [],
+  "ticker_extra_file": "~/wdbs-today/ticker-extra.txt"
+}
